@@ -1,9 +1,9 @@
 {% import "ceph/config.sls" as config with context %}
 
 ceph-keyring:
-  cmd.run:
-      - name: wget -q -O - https://raw.github.com/ceph/ceph/master/keys/release.asc | sudo apt-key add -
-      - unless: apt-key list | grep -q -i ceph'
+    cmd.run:
+        - name: wget -q -O - https://raw.github.com/ceph/ceph/master/keys/release.asc | sudo apt-key add -
+        - unless: apt-key list | grep -q -i ceph'
 ceph:
     pkgrepo.managed:
         - name: {{ config.source }}
@@ -26,6 +26,7 @@ ceph:
         - context:
             devices: {{ config.devices }}
             monitors: {{ config.monitors }}
+            metadata: {{ config.metadata }}
             ip: {{ config.ip }}
 
 {% for host in config.monitors %}
@@ -63,4 +64,20 @@ ceph:
         - context:
             id: {{id}}
             key: {{config.auth[id].get("key", "")}}
+{% endfor %}
+
+{% for host in config.metadata %}
+{% if grains['localhost'] == host %}
+/var/lib/ceph/mds/ceph-{{host}}:
+    file.directory:
+        - owner: root
+        - group: root
+        - mode: 0755
+        - makedirs: true
+mds-key-{{host}}:
+    cmd.run:
+        - name: ceph auth get-or-create mds.{{host}} mon 'allow rwx' osd 'allow *' mds 'allow *' -o /var/lib/ceph/mds/ceph-{{host}}/keyring
+    require:
+        - directory: /var/lib/ceph/mds/ceph-{{host}}
+{% endif %}
 {% endfor %}
