@@ -16,6 +16,10 @@ ceph:
         - pkgrepo: {{ config.source }}
         - state: ceph-keyring
 
+ceph-common:
+    pkg:
+        - latest
+
 /etc/ceph/ceph.conf:
     file.managed:
         - source: salt://ceph/ceph.conf
