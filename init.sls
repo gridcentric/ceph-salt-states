@@ -28,6 +28,7 @@ ceph-common:
         - mode: 0644
         - template: jinja
         - context:
+            fsid: {{ config.fsid }}
             devices: {{ config.devices }}
             monitors: {{ config.monitors }}
             metadata: {{ config.metadata }}
