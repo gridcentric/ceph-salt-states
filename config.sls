@@ -1,5 +1,8 @@
 {% import "openstack/config.sls" as config with context %}
 {% set ip = config.internal_ip %}
+{% if not ip %}
+{% set ip = salt['network.ip_addrs']()[0] %}
+{% endif %}
 
 {% set ceph = pillar.get('ceph', {}) %}
 {% set fsid = ceph.get('fsid', '') %}
