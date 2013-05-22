@@ -23,7 +23,7 @@ ceph-common:
 /etc/ceph/ceph.conf:
     file.managed:
         - source: salt://ceph/ceph.conf
-        - owner: root
+        - user: root
         - group: root
         - mode: 0644
         - template: jinja
@@ -38,7 +38,7 @@ ceph-common:
 {% if grains['localhost'] == host %}
 /var/lib/ceph/mon/ceph-{{host}}:
     file.directory:
-        - owner: root
+        - user: root
         - group: root
         - mode: 0755
         - makedirs: true
@@ -50,7 +50,7 @@ ceph-common:
 {% if grains['localhost'] == host %}
 /var/lib/ceph/osd/ceph-{{id}}:
     file.directory:
-        - owner: root
+        - user: root
         - group: root
         - mode: 0755
         - makedirs: true
@@ -63,7 +63,7 @@ ceph-keyring-{{id}}:
     file.managed:
         - name: /etc/ceph/ceph.{{id}}.keyring
         - source: salt://ceph/keyring
-        - owner: {{config.auth[id].get("owner", "root")}}
+        - user: {{config.auth[id].get("user", "root")}}
         - group: {{config.auth[id].get("group", "root")}}
         - mode: {{config.auth[id].get("mode", 0600)}}
         - template: jinja
@@ -76,7 +76,7 @@ ceph-keyring-{{id}}:
 {% if grains['localhost'] == host %}
 /var/lib/ceph/mds/ceph-{{host}}:
     file.directory:
-        - owner: root
+        - user: root
         - group: root
         - mode: 0755
         - makedirs: true
