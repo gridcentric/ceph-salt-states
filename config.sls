@@ -5,6 +5,6 @@
 {% set fsid = ceph.get('fsid', '') %}
 {% set source = ceph.get('source', 'deb http://ceph.com/debian precise main') %}
 {% set devices = ceph.get('devices', {}) %}
-{% set monitors = ceph.get('monitors', {}) %}
-{% set metadata = ceph.get('metadata', {}) %}
+{% set monitors = ceph.get('monitors', []) %}
+{% set metadata = ceph.get('metadata', []) %}
 {% set auth = ceph.get('auth', {}) %}
