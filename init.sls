@@ -59,8 +59,9 @@ ceph-common:
 {% endfor %}
 
 {% for id in config.auth %}
-/etc/ceph/ceph.{{id}}.keyring:
+ceph-keyring-{{id}}:
     file.managed:
+        - name: /etc/ceph/ceph.{{id}}.keyring
         - source: salt://ceph/keyring
         - owner: {{config.auth[id].get("owner", "root")}}
         - group: {{config.auth[id].get("group", "root")}}
