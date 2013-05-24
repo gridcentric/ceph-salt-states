@@ -12,15 +12,14 @@ ceph:
         - file: /etc/apt/sources.list.d/ceph.list
     pkg:
         - installed
-        - latest
     require:
         - pkgrepo: {{ config.source }}
         - state: ceph-keyring
 
 ceph-common:
-    pkg:
-        - installed
-        - latest
+    pkg.latest:
+        - require:
+            - pkg: ceph
 
 /etc/ceph/ceph.conf:
     file.managed:
