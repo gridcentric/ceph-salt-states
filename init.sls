@@ -11,6 +11,7 @@ ceph:
         - humanname: ceph
         - file: /etc/apt/sources.list.d/ceph.list
     pkg:
+        - installed
         - latest
     require:
         - pkgrepo: {{ config.source }}
@@ -18,6 +19,7 @@ ceph:
 
 ceph-common:
     pkg:
+        - installed
         - latest
 
 /etc/ceph/ceph.conf:
